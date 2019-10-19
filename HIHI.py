@@ -1,2 +1,0 @@
-print("HIHI")
-print("ADD")
