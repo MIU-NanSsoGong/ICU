@@ -25,12 +25,13 @@ $ pip install flask-restful
 ```
 
 - edit server port
->If your port number 5000 is used now, edit your port number in last line of 
-server.py
+>If your port number 5000 is used now, edit your port number in last line of server.py.
 Changed port number shoud be reflected to mobile application.
 
 - open server
+```
 $ python server.py
+```
 >Server can be closed by keyboard interrupt.
 
 ---
@@ -44,10 +45,21 @@ Queue manager forwards json file sequentially to the data manager.
 This json file has enum number to cmd element.
 
 ```
+Manager cmd
+50 : Camera monitoring
+51 : Call client list(Ordered return recommended)
+52 : Change client status
+53 : Check message log
+54 : Send message to client
+55 : Check all visit log
+```
+```
+Client cmd
 0 : Enroll client to server
-1 : Check whether you are registered
+1 : Check whether you are registered(check also whether sent message)
 2 : Send picture
-3 : Check your log
+3 : Check visit log
+4 : Send message to manager
 ```
 
 - client list
