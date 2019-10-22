@@ -16,24 +16,24 @@ def upload_file():
       number = raw_data["number"]
       data = json.dumps(raw_data, encoding='utf-8')
 
-      file = open(number+".json", 'w')
+      file = open("./queue/"+number+".json", 'w')
       file.write(data)
       data = json.loads(data)
       file.close()
-      return 'uploads directory -> file upload success!'
-  
-"""   list_file = open('./client_list/list.json', 'r').read()
+
+   list_file = open('./client_list/list.json', 'r').read()
    client_list = json.loads(list_file)
    try:
       if not client_list[number]:
          return 'This number is already enrolled'
    except:
+      print("hi")
       list_file = open('./client_list/list.json', 'w')
-      client_list[number].append("0")
+      client_list[number] = "0"
       data = json.dumps(client_list, encoding='utf-8')
-      #list_file.write(data_)
+      list_file.write(data)
    return 'uploads directory -> file upload success!'
-"""
+
 
 
 if __name__ == '__main__':
