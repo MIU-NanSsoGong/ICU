@@ -15,24 +15,40 @@ def upload_file():
       raw_data = request.json
       number = raw_data["number"]
       data = json.dumps(raw_data, encoding='utf-8')
-
       file = open("./queue/"+number+".json", 'w')
       file.write(data)
-      data = json.loads(data)
+      #data = json.loads(data)
       file.close()
 
    list_file = open('./client_list/list.json', 'r').read()
    client_list = json.loads(list_file)
    try:
-      if not client_list[number]:
-         return 'This number is already enrolled'
+      if client_list[number]:
+         return client_list[number]
    except:
-      print("hi")
       list_file = open('./client_list/list.json', 'w')
       client_list[number] = "0"
       data = json.dumps(client_list, encoding='utf-8')
       list_file.write(data)
    return 'uploads directory -> file upload success!'
+
+@app.route('/ServerAccess', methods = ['POST'])
+def server_access():
+   if request.method == 'POST':
+      raw_data = request.json
+      number = raw_data["number"]
+      data = json.dumps(raw_data, encoding='utf-8')
+      file = open("./queue/"+number+".json", 'w')
+      file.write(data)
+      file.close()
+      list_file = open('./client_list/list.json', 'r').read()
+      client_list = json.loads(list_file)
+      try:
+         if client_list[number]:
+            print(client_list[number])
+            return client_list[number]
+      except:
+         return "-1"
 
 
 
