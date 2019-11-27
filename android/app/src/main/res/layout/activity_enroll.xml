@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".enrollActivity">
+
+    <TextView
+        android:id="@+id/enroll_background"
+        android:layout_width="260dp"
+        android:layout_height="422dp"
+        android:background="@drawable/button_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/enroll_name"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="76dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/enroll_background" />
+
+    <Button
+        android:id="@+id/btn_enroll_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="60dp"
+        android:text="@string/str_enroll_submit"
+        android:onClick="OnClickHandler"
+        app:layout_constraintBottom_toBottomOf="@+id/enroll_background"
+        app:layout_constraintEnd_toEndOf="@+id/enroll_background"
+        app:layout_constraintStart_toStartOf="@+id/enroll_background" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="36dp"
+        android:text="@string/str_enroll_name"
+        android:textSize="30sp"
+        app:layout_constraintEnd_toStartOf="@+id/enroll_name"
+        app:layout_constraintTop_toTopOf="@+id/enroll_name" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

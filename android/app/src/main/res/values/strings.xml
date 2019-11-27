@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">ICU</string>
+    <string name="str_enroll">번호로 로그인</string>
+    <string name="str_enroll_name">이름</string>
+    <string name="str_enroll_num">번호</string>
+    <string name="str_enroll_submit">전송</string>
+    <string name="str_address">192.168.0.22:5000</string>
+    <color name="background">#918B8B</color>
+    <color name="btn_color">#FFF3E5F5</color>
+</resources>
