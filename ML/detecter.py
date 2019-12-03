@@ -31,7 +31,7 @@ class FaceDetector():
         #credentials = GoogleCredentials.get_application_default()
         scopes = ['https://www.googleapis.com/auth/cloud-platform']
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
-                        './terrycho-ml-80abc460730c.json', scopes=scopes)
+                        './api_key.json', scopes=scopes)
         self.service = discovery.build('vision', 'v1', credentials=credentials)
         #print ("Getting vision API client : %s" ,self.service)
 

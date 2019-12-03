@@ -6,8 +6,11 @@
 1. required module
 ```
 $ pip install opencv-python
+$ pip install google-api-python-client
+$ pip install oauth2client
+$ pip install pillow
 ```
-#Reference
+Reference
 1. recorder
 https://hoony-gunputer.tistory.com/87
 2. extracter
