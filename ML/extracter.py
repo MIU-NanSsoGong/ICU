@@ -2,8 +2,6 @@ import cv2
 import os
 import shutil
 
-shutil.rmtree("./images")
-
 user_num = "01032244433"
 vidcap = cv2.VideoCapture('./ICU_cam.avi')
 count = 0
@@ -11,6 +9,8 @@ ret = True
 
 if not os.path.exists("./images/" + user_num):
             os.makedirs("./images/" + user_num)
+else:
+    shutil.rmtree("./images" + user_num)
 
 while(ret):
     ret, image = vidcap.read()
