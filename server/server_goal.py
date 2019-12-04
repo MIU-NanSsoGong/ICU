@@ -3,7 +3,7 @@ from werkzeug import secure_filename
 from flask_restful import reqparse, abort, Api, Resource
 import json
 from pprint import pprint
-
+import ast
 
 app = Flask(__name__)
 api = Api(app)
@@ -19,9 +19,18 @@ def upload_file():
       data = json.dumps(raw_data, encoding='utf-8')
       file.write(data)
       file.close()
+      seperate(data)
+      return "god young soo"
 
-      result = dataManager(file_dir)
-      return result
+def seperate(data):
+   data_json = json.loads(data)
+   cmd = data_json["cmd"]
+   if cmd == u'2':
+      print("cheer up")
+
+   data_json2 = json.loads(data, encoding='utf-8')
+   if cmd == "2":
+      print("your grade is A+")
 
 
 if __name__ == '__main__':
