@@ -22,7 +22,7 @@ MAX_PAN = 20
 
 # index to transfrom image string label to number
 global_label_index = 0 
-global_label_number = [0 for x in range(1000)]
+global_label_number = [0 for x in range(100)]
 global_image_hash = []
 
 class FaceDetector():
