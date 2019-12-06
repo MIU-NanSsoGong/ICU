@@ -18,6 +18,8 @@
 >If your PC is on VMware, set 'bridge to adapter' at VMware network setting.
 You should install python and additional modules.
 ```
+($sudo apt-get upgrade)
+($sudo apt-get update)
 $ sudo apt-get install python
 $ sudo apt-get install python-pip
 $ pip install flask
