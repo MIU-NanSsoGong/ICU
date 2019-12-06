@@ -47,7 +47,10 @@ def server_access():
          if client_list[number]:
             print(client_list[number])
             return client_list[number]
+         else:
+            return "ohno"
       except:
+         print("sd")
          return "-1"
 
 
