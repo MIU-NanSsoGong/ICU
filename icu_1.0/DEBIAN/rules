@@ -1,0 +1,12 @@
+#!/usr/bin/make -f
+export PYTHONPATH=$(CURDIR)
+
+%:
+	dh $@ --buildsystem python_distutils --with python2
+build:
+	dh build
+clean:
+	dh clean
+	rm -rf icu.egg-info build
+	find . \( -name '*.py[co]' -or -name '\._*' -or -name '\.DS_Store' \) -delete
+

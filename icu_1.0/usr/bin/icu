@@ -1,0 +1,2 @@
+#!/bin/bash
+python /usr/lib/python2.7/dist-packages/icu_1.0/server/server.py

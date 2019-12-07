@@ -1,0 +1,13 @@
+Package: icu
+Version: 1.3.4
+Section: devel
+Priority: optional
+Architecture: all
+Depends: build-essential
+Recommends: libjson0-dbg, python-mysqldb
+Maintainer: Developers <kukuta@gmail.com>
+Homepage: http://kukuta.tistory.com
+Description: Server Development base library install package
+ 1.0.1 : bug fetch..#1
+ 1.1.1 : bug fetch..#2
+ 1.2.0 : bug fetch..#3
