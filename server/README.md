@@ -62,6 +62,8 @@ Client cmd
 2 : Send picture
 3 : Check visit log
 4 : Send message to manager
+
+20: Upload video
 ```
 
 - client list
