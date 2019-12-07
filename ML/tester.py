@@ -2,6 +2,8 @@ import tensorflow as tf
 import numpy as np
 import re
 from datetime import datetime
+import os
+icu_path = os.environ['icu_path']
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -11,7 +13,7 @@ FLAGS.maxpool_filter_size = 2
 FLAGS.num_classes=5
 FLAGS.batch_size=100
 FLAGS.learning_rate = 0.0001
-FLAGS.log_dir='/Users/terrycho/'
+FLAGS.log_dir= os.getcwd()
 
 def get_input_queue(csv_file_name,num_epochs = None):
     train_images = []
@@ -219,101 +221,99 @@ def build_model(images,keep_prob):
 
     return r_out 
 
+def main():
+    images = tf.placeholder(tf.float32,[None,FLAGS.image_size,FLAGS.image_size,FLAGS.image_color])
+    keep_prob = tf.placeholder(tf.float32) # dropout ratio
 
-# build graph
-images = tf.placeholder(tf.float32,[None,FLAGS.image_size,FLAGS.image_size,FLAGS.image_color])
-keep_prob = tf.placeholder(tf.float32) # dropout ratio
+    prediction = tf.nn.softmax(build_model(images,keep_prob))
+    sess = tf.InteractiveSession()
+    sess.run(tf.global_variables_initializer())
+    saver = tf.train.Saver()
+    saver.restore(sess, icu_path + 'ML/face_recog')
 
-prediction = tf.nn.softmax(build_model(images,keep_prob))
-sess = tf.InteractiveSession()
-sess.run(tf.global_variables_initializer())
-saver = tf.train.Saver()
-saver.restore(sess, 'face_recog')
+    import google.auth
+    import io
+    from oauth2client.client import GoogleCredentials
+    from google.cloud import vision
+    from PIL import Image
+    from PIL import ImageDraw
 
-import google.auth
-import io
-import os
-from oauth2client.client import GoogleCredentials
-from google.cloud import vision
-from PIL import Image
-from PIL import ImageDraw
+    FLAGS.image_size = 96
+    imagefile = "sample.jpg"
+    # set service account file into OS environment value
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = icu_path + "api_key.json"
 
-FLAGS.image_size = 96
-imagefile = 'sample.jpg'
-# set service account file into OS environment value
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "./api_key.json"
+    visionClient = vision.ImageAnnotatorClient()
+    print ('[INFO] processing %s'%(imagefile))
 
-visionClient = vision.ImageAnnotatorClient()
-print ('[INFO] processing %s'%(imagefile))
+    #detect face
+    #image = visionClient.image(filename=imagefile)
+    #faces = image.detect_faces()
+    #face = faces[0]
+    with io.open(icu_path + "../Desktop/sample.jpg", 'rb') as image_file:
+        content = image_file.read()
+    image = vision.types.Image(content=content)
+    response = visionClient.face_detection(image=image)
+    faces = response.face_annotations
+    face = faces[0]
 
-#detect face
-#image = visionClient.image(filename=imagefile)
-#faces = image.detect_faces()
-#face = faces[0]
-with io.open("./sample.jpg", 'rb') as image_file:
-    content = image_file.read()
-image = vision.types.Image(content=content)
-response = visionClient.face_detection(image=image)
-faces = response.face_annotations
-face = faces[0]
+    print 'number of faces ',len(faces)
 
-print 'number of faces ',len(faces)
+    #get face location in the photo 
+    #left = face.fd_bounds.vertices[0].x_coordinate
+    #top = face.fd_bounds.vertices[0].y_coordinate
+    #right = face.fd_bounds.vertices[2].x_coordinate
+    #bottom = face.fd_bounds.vertices[2].y_coordinate
+    left = face.bounding_poly.vertices[0].x
+    top = face.bounding_poly.vertices[0].y
+    right = face.bounding_poly.vertices[2].x
+    bottom = face.bounding_poly.vertices[2].y
+    rect = [left,top,right,bottom]
 
-#get face location in the photo 
-#left = face.fd_bounds.vertices[0].x_coordinate
-#top = face.fd_bounds.vertices[0].y_coordinate
-#right = face.fd_bounds.vertices[2].x_coordinate
-#bottom = face.fd_bounds.vertices[2].y_coordinate
-left = face.bounding_poly.vertices[0].x
-top = face.bounding_poly.vertices[0].y
-right = face.bounding_poly.vertices[2].x
-bottom = face.bounding_poly.vertices[2].y
-rect = [left,top,right,bottom]
-
-fd = io.open(imagefile,'rb')
-image = Image.open(fd)
-"""
-import matplotlib.pyplot as plt
-# display original image
-print "Original image"
-plt.imshow(image)
-plt.show()
+    fd = io.open(icu_path + "../Desktop/" + imagefile,'rb')
+    image = Image.open(fd)
+    """
+    import matplotlib.pyplot as plt
+    # display original image
+    print "Original image"
+    plt.imshow(image)
+    plt.show()
 
 
-# draw green box for face in the original image
-print "Detect face boundary box "
-draw = ImageDraw.Draw(image)
-draw.rectangle(rect,fill=None,outline="green")
+    # draw green box for face in the original image
+    print "Detect face boundary box "
+    draw = ImageDraw.Draw(image)
+    draw.rectangle(rect,fill=None,outline="green")
 
-plt.imshow(image)
-plt.show()
+    plt.imshow(image)
+    plt.show()
 
-crop = image.crop(rect)
-im = crop.resize((FLAGS.image_size,FLAGS.image_size),Image.ANTIALIAS)
-plt.show()
-im.save('cropped'+imagefile)
+    crop = image.crop(rect)
+    im = crop.resize((FLAGS.image_size,FLAGS.image_size),Image.ANTIALIAS)
+    plt.show()
+    im.save('cropped'+imagefile)
 
-print "Cropped image"
-tfimage = tf.image.decode_jpeg(tf.read_file('cropped'+imagefile),channels=3)
-tfimage_value = tfimage.eval()
-tfimages = []
-tfimages.append(tfimage_value)
-plt.imshow(tfimage_value)
-plt.show()
-fd.close()
-"""
-crop = image.crop(rect)
-im = crop.resize((FLAGS.image_size,FLAGS.image_size),Image.ANTIALIAS)
-im.save('cropped'+imagefile)
-fd.close()
-tfimage = tf.image.decode_jpeg(tf.read_file('cropped'+imagefile),channels=3)
-tfimage_value = tfimage.eval()
-tfimages = []
-tfimages.append(tfimage_value)
+    print "Cropped image"
+    tfimage = tf.image.decode_jpeg(tf.read_file('cropped'+imagefile),channels=3)
+    tfimage_value = tfimage.eval()
+    tfimages = []
+    tfimages.append(tfimage_value)
+    plt.imshow(tfimage_value)
+    plt.show()
+    fd.close()
+    """
+    crop = image.crop(rect)
+    im = crop.resize((FLAGS.image_size,FLAGS.image_size),Image.ANTIALIAS)
+    im.save(icu_path + "../Desktop/" + 'cropped'+imagefile)
+    fd.close()
+    tfimage = tf.image.decode_jpeg(tf.read_file(icu_path + "../Desktop/" + 'cropped'+imagefile),channels=3)
+    tfimage_value = tfimage.eval()
+    tfimages = []
+    tfimages.append(tfimage_value)
 
-p_val = sess.run(prediction,feed_dict={images:tfimages,keep_prob:1.0})
-name_labels = ['0','1','2']
-i = 0
-for p in p_val[0]:
-    print('%s %f'% (name_labels[i],float(p)) )
-    i = i + 1
+    p_val = sess.run(prediction,feed_dict={images:tfimages,keep_prob:1.0})
+    name_labels = ['0','1','2']
+    i = 0
+    for p in p_val[0]:
+        print('%s %f'% (name_labels[i],float(p)) )
+        i = i + 1

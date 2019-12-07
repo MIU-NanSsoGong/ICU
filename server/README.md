@@ -48,9 +48,9 @@ This json file has enum number to cmd element.
 
 ```
 Manager cmd
-50 : Camera monitoring
-51 : Call client list(Ordered return recommended)
-52 : Change client status
+50 : Read client list(Ordered return recommended)
+51 : Change client status
+52 : Camera monitoring
 53 : Check message log
 54 : Send message to client
 55 : Check all visit log
@@ -59,9 +59,8 @@ Manager cmd
 Client cmd
 0 : Enroll client to server
 1 : Check whether you are registered(check also whether sent message)
-2 : Send picture
-3 : Check visit log
-4 : Send message to manager
+2 : Check visit log
+3 : Send message to manager
 
 20: Upload video
 ```

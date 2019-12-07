@@ -11,6 +11,7 @@ import os
 import hashlib
 from oauth2client.service_account import ServiceAccountCredentials
 
+icu_path = os.environ['icu_path']
 
 NUM_THREADS = 10
 MAX_FACE = 2
@@ -31,7 +32,7 @@ class FaceDetector():
         #credentials = GoogleCredentials.get_application_default()
         scopes = ['https://www.googleapis.com/auth/cloud-platform']
         credentials = ServiceAccountCredentials.from_json_keyfile_name(
-                        './api_key.json', scopes=scopes)
+                        icu_path + 'api_key.json', scopes=scopes)
         self.service = discovery.build('vision', 'v1', credentials=credentials)
         #print ("Getting vision API client : %s" ,self.service)
 
@@ -260,10 +261,10 @@ class FaceDetector():
 # arg[1] : src directory
 # arg[2] : destination diectory
 # arg[3] : max number of samples per class        
-def main(argv):
-    srcdir= argv[1]
-    desdir = argv[2]
-    maxnum = int(argv[3])
+def main(srcdir, desdir, maxnum):
+   # srcdir= argv[1]
+    #desdir = argv[2]
+    #maxnum = int(argv[3])
     
     detector = FaceDetector()
 

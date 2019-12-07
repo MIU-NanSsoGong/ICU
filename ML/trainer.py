@@ -2,9 +2,10 @@ import tensorflow as tf
 import numpy as np
 import re
 from datetime import datetime
-
-TRAINING_FILE = './faces/training_file.txt'
-VALIDATION_FILE = './faces/validate_file.txt'
+import os
+icu_path = os.environ['icu_path']
+TRAINING_FILE = icu_path + 'ML/faces/training_file.txt'
+VALIDATION_FILE = icu_path + 'ML/faces/validate_file.txt'
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -14,7 +15,7 @@ FLAGS.maxpool_filter_size = 2
 FLAGS.num_classes=5
 FLAGS.batch_size=100
 FLAGS.learning_rate = 0.0001
-FLAGS.log_dir='/home/yssong/'
+FLAGS.log_dir=os.getcwd()
 
 def get_input_queue(csv_file_name,num_epochs = None):
     train_images = []
@@ -297,9 +298,7 @@ def main(argv=None):
                 summary_writer.add_summary(summary_str,i)
                 summary_writer.flush()
         
-        saver.save(sess, 'face_recog') # save session
+        saver.save(sess, icu_path + 'ML/face_recog') # save session
         coord.request_stop()
         coord.join(threads)
         print('finish')
-    
-main()
