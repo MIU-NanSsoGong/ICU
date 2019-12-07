@@ -1,0 +1,7 @@
+#!/bin/sh
+
+mkdir -p ~/.icu_1.0/ML/faces/
+mkdir ~/.icu_1.0/ML/images/
+mkdir -p ~/.icu_1.0/server/client_list/
+mkdir ~/.icu_1.0/server/queue/
+mkdir ~/.icu_1.0/server/message/

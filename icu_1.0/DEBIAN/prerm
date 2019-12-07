@@ -1,0 +1,5 @@
+#!/bin/sh
+
+rm /usr/lib/python2.7/dist-packages/icu_1.0/server/*.pyc
+rm /usr/lib/python2.7/dist-packages/icu_1.0/ML/*.pyc
+rm -r ~/.icu_1.0
