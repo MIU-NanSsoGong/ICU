@@ -3,6 +3,7 @@ import os
 from icu.ML import MLmain
 
 ML_busy = 0
+video_num = 0
 icu_path = os.environ['icu_path']
 
 def seperate(data):
