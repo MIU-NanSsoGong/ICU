@@ -5,19 +5,28 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Toast;
 import android.widget.VideoView;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+
+public class MainActivity extends AppCompatActivity {
+    String phoneNum = "01032244433";
+    String serverIP = "192.168.0.22:5002";
 
     private VideoView videoView;
 
-    public void saveNameStid(View view){
+    public void saveNameStid(View view) throws InterruptedException, ExecutionException, JSONException {
+        IsRegistered(phoneNum, serverIP);
         EditText UserNameEditText = (EditText)findViewById(R.id.nameText);
         String newUserName = UserNameEditText.getText().toString();
         EditText UserStIdEditText = (EditText)findViewById(R.id.stidText);
@@ -51,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == REQUEST_VIDEO_CAPTURE && resultCode == RESULT_OK) {
             Uri videoUri = intent.getData();
-            videoView.setVideoURI(videoUri);
         }
     }
 
@@ -59,5 +67,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+    }
+
+    public int IsRegistered(String PhoneNum, String serverIP) throws JSONException, ExecutionException, InterruptedException {
+        JSONObject object = new JSONObject();
+        object.put("number", PhoneNum);
+        object.put("cmd", 1);
+        final String json = object.toString();
+
+        String url = "http://".concat(serverIP).concat("/");
+
+        NetworkTask networkTask = new NetworkTask(url,json);
+        int result = Integer.parseInt(networkTask.execute().get());
+        return result;
+    }
+
+    public class NetworkTask extends AsyncTask<Void, Void, String> {
+
+        String url;
+        String json;
+
+        NetworkTask(String url, String json){
+            this.url = url;
+            this.json = json;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progress bar를 보여주는 등등의 행위
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result;
+            RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
+            result = requestHttpURLConnection.request(url,json);
+            return result; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // 통신이 완료되면 호출됩니다.
+            // 결과에 따른 UI 수정 등은 여기서 합니다.
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        }
     }
 }
