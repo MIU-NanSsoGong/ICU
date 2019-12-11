@@ -2,7 +2,8 @@ import json
 import os
 from icu.ML import MLmain
 
-video_busy = 0
+ML_busy = 0
+video_num = 0
 icu_path = os.environ['icu_path']
 
 def seperate(data):
@@ -42,10 +43,10 @@ def seperate(data):
       return '1'
 
    if cmd == '20':
-      global video_busy
+      global ML_busy
       global video_num
-      if (not video_busy) or (not os.path.isfile(icu_path + "server/upload_video.avi")):
-         video_busy = 1
+      if (not ML_busy) or (not os.path.isfile(icu_path + "server/upload_video.avi")):
+         ML_busy = 1
          video_num = number
          return '1'
       else:
@@ -73,8 +74,8 @@ def seperate(data):
       return "1"
 
 def release_busy():
-   global video_busy
-   video_busy = 0
+   global ML_busy
+   ML_busy = 0
 
 def get_num():
    global video_num

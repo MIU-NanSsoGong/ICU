@@ -12,7 +12,7 @@ app = Flask(__name__)
 api = Api(app)
 
 @app.route('/', methods = ['POST'])
-def upload_file():
+def toss_json():
    if request.method == 'POST':
       raw_data = request.json
       return interpreter.seperate(raw_data)
