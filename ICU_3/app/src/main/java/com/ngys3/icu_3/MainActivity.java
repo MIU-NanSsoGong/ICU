@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -26,6 +27,14 @@ public class MainActivity extends AppCompatActivity {
     private VideoView videoView;
 
     public void saveNameStid(View view) throws InterruptedException, ExecutionException, JSONException {
+        /*AndroidUploader uploader = new AndroidUploader();
+        String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20191211_103002.jpg";
+        uploader.uploadPicture(path);*/
+
+        String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20191211_103002.jpg";
+        NetworkTask2 uploader = new NetworkTask2(serverIP,path);
+        int result = Integer.parseInt(uploader.execute().get());
+
         IsRegistered(phoneNum, serverIP);
         EditText UserNameEditText = (EditText)findViewById(R.id.nameText);
         String newUserName = UserNameEditText.getText().toString();
@@ -103,6 +112,38 @@ public class MainActivity extends AppCompatActivity {
             String result;
             RequestHttpURLConnection requestHttpURLConnection = new RequestHttpURLConnection();
             result = requestHttpURLConnection.request(url,json);
+            return result; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // 통신이 완료되면 호출됩니다.
+            // 결과에 따른 UI 수정 등은 여기서 합니다.
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class NetworkTask2 extends AsyncTask<Void, Void, String> {
+
+        String url;
+        String path;
+
+        NetworkTask2(String url, String path){
+            this.url = url;
+            this.path = path;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //progress bar를 보여주는 등등의 행위
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String result;
+            AndroidUploader uploader = new AndroidUploader();
+            result = uploader.uploadPicture(path);
             return result; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
         }
 
