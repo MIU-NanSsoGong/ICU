@@ -57,7 +57,7 @@ public class AndroidUploader	{
 
 
 
-    public String uploadPicture(String pictureFileName)	    {
+    public ReturnCode uploadPicture(String pictureFileName)	    {
 
         this.pictureFileName = pictureFileName;
 
@@ -105,9 +105,9 @@ public class AndroidUploader	{
 
                 //writeFormField("login", name);
 
-                //writeFormField("password", password);
+                //=writeFormField("password", password);
 
-                writeFileField("photo1", pictureFileName, "image/jpg", fileInputStream);
+                writeFileField("photo1", pictureFileName, "video/mp4", fileInputStream);
 
 
 
@@ -137,15 +137,13 @@ public class AndroidUploader	{
 
 
 
-                if (response.contains("uploaded successfully"))
 
-                    return "http201";
 
-                else
+                return ReturnCode.http201;
 
                     // for now assume bad name/password
 
-                    return "ReturnCode.http401";
+                //return ReturnCode.http401;
 
             }
 
@@ -153,7 +151,7 @@ public class AndroidUploader	{
 
                 Log.e(TAG, "error: " + mue.getMessage(), mue);
 
-                return "http400";
+                return ReturnCode.http400;
 
             }
 
@@ -161,7 +159,7 @@ public class AndroidUploader	{
 
                 Log.e(TAG, "error: " + ioe.getMessage(), ioe);
 
-                return "http500";
+                return ReturnCode.http500;
 
             }
 
@@ -169,11 +167,11 @@ public class AndroidUploader	{
 
                 Log.e(TAG, "error: " + e.getMessage(), e);
 
-                return "unknown";
+                return ReturnCode.unknown;
 
             }    else    {
 
-            return "noPicture";
+            return ReturnCode.noPicture;
 
         }
 

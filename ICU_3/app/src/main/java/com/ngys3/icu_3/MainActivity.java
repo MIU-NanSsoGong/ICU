@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20191211_103002.jpg";
         uploader.uploadPicture(path);*/
 
-        String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20191211_103002.jpg";
+        String path = Environment.getExternalStorageDirectory()+"/DCIM/Camera/20191212_200102.mp4";
         NetworkTask2 uploader = new NetworkTask2(serverIP,path);
         int result = Integer.parseInt(uploader.execute().get());
 
@@ -143,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(Void... params) {
             String result;
             AndroidUploader uploader = new AndroidUploader();
-            result = uploader.uploadPicture(path);
-            return result; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
+            uploader.uploadPicture(path);
+            return "1"; // 결과가 여기에 담깁니다. 아래 onPostExecute()의 파라미터로 전달됩니다.
         }
 
         @Override
